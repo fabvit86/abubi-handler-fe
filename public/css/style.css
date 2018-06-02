@@ -1,0 +1,67 @@
+body {
+	background-color: lightblue;
+}
+h1 {
+	text-align: center;
+	color: darkblue;
+	font-family: sans-serif;
+}
+#mainContainer {
+	text-align: center;
+}
+
+/* SVG */
+#svgchart {
+	background-color: white;
+}
+
+#svgchart rect {
+	fill: darkseagreen;
+}
+
+#svgchart text.axisLabel, .smallText {
+	fill: darkblue;
+}
+
+#svgchart rect.overed {
+	fill: red;
+}
+
+#svgchart g.tick text{
+	fill: red;
+	font: 14px sans-serif;
+	text-anchor: end;
+}
+
+#svgchart text.axisLabel {
+	font-size: 18px;
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 120px;
+  height: 70px;
+  padding: 2px;
+  font: 16px sans-serif;
+  background: deepskyblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none; /* keep the mouseover when over the tooltip */
+}
+
+.tooltip span.gross {
+	font-weight: bold;
+}
+
+#svgchart .smallText {
+	font-size: 10px;
+}
+
+#footer {
+  color: black;
+  text-align: center;
+}
+#footer a{
+	color: blue;
+}
