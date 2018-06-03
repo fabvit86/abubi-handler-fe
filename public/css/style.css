@@ -12,11 +12,24 @@ h1 {
 
 /* SVG */
 #svgchart {
-	background-color: white;
+	background-color: floralwhite;
 }
 
 #svgchart rect {
-	fill: darkseagreen;
+	stroke: black;
+	stroke-width: 0.3
+}
+#svgchart rect.legend-rect {
+	stroke-width: 0.8
+}
+#svgchart rect.barP {
+	fill: yellow;
+}
+#svgchart rect.barK {
+	fill: tomato;
+}
+#svgchart rect.barF {
+	fill: blue;
 }
 
 #svgchart text.axisLabel, .smallText {

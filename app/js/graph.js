@@ -40,7 +40,6 @@ data.forEach(entranceObj => {
 // scan all entrances of a given user:
 function scanUserEntrances(entranceObj, key) {
   entranceObj.entrances[key].forEach(entranceK => {
-    // console.log("entrance user",key," = ", entranceK)
     const entranceDateK = new Date(entranceObj.date + " " + entranceK)
     checkHour(entranceDateK, key, entranceObj.date)
   })
@@ -59,7 +58,6 @@ function checkHour(entranceDate, key, date) {
   const hour17Date = new Date(date + " 17:00:000")
   const hour18Date = new Date(date + " 18:00:000")
   const hour19Date = new Date(date + " 19:00:000")
-  // console.log("key = ", key, "input entranceDate =", entranceDate)
   if(entranceDate < hour09Date) {
     entrancesByHour[key].values.h08_09++
     if(max < entrancesByHour[key].values.h08_09) max++
@@ -72,6 +70,27 @@ function checkHour(entranceDate, key, date) {
   }else if(entranceDate < hour12Date) {
     entrancesByHour[key].values.h11_12++
     if(max < entrancesByHour[key].values.h11_12) max++
+  }else if(entranceDate < hour13Date) {
+    entrancesByHour[key].values.h12_13++
+    if(max < entrancesByHour[key].values.h12_13) max++
+  }else if(entranceDate < hour14Date) {
+    entrancesByHour[key].values.h13_14++
+    if(max < entrancesByHour[key].values.h13_14) max++
+  }else if(entranceDate < hour15Date) {
+    entrancesByHour[key].values.h14_15++
+    if(max < entrancesByHour[key].values.h14_15) max++
+  }else if(entranceDate < hour16Date) {
+    entrancesByHour[key].values.h15_16++
+    if(max < entrancesByHour[key].values.h15_16) max++
+  }else if(entranceDate < hour17Date) {
+    entrancesByHour[key].values.h16_17++
+    if(max < entrancesByHour[key].values.h16_17) max++
+  }else if(entranceDate < hour18Date) {
+    entrancesByHour[key].values.h17_18++
+    if(max < entrancesByHour[key].values.h17_18) max++
+  }else if(entranceDate < hour19Date) {
+    entrancesByHour[key].values.h18_19++
+    if(max < entrancesByHour[key].values.h18_19) max++
   }
 }
 
@@ -122,31 +141,31 @@ entrancesByHour =
       "P": 
         [
           {
-            "range": "09_10",
+            "range": "09-10",
             "count": 3
           },
           {
-            "range": "10_11",
-            "count": 7
+            "range": "10-11",
+            "count": 0
           },
           {
-            "range": "11_12",
-            "count": 5
+            "range": "11-12",
+            "count": 1
           } 
         ],
       "F": 
         [
           {
-            "range": "09_10",
+            "range": "09-10",
+            "count": 2
+          },
+          {
+            "range": "10-11",
             "count": 3
           },
           {
-            "range": "10_11",
-            "count": 7
-          },
-          {
-            "range": "11_12",
-            "count": 5
+            "range": "11-12",
+            "count": 1
           } 
         ],
     }
@@ -158,12 +177,13 @@ console.log("max = ",max)
 const margins = {top: 20, right: 20, bottom: 60, left: 120}
 const chartHeight = 600 - margins.top - margins.bottom
 const chartWidth = 1000 - margins.left - margins.right
-const xRange = ["08-09", "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19"]
-const numberOfXElements = xRange.length 
-const barWidth = chartWidth / numberOfXElements
+const xRange = ["09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19"]
+const numberOfUsers = Object.keys(entrancesByHour).length;
+const numberOfXElements = xRange.length + 2
+const barWidth = (chartWidth / numberOfXElements) / numberOfUsers
 
 // x scale:
-const x = d3.scaleLinear().domain([0, xRange.length-1]).range([0, chartWidth])
+const x = d3.scaleLinear().domain([-1, xRange.length]).range([0, chartWidth])
 // y scale:
 const y = d3.scaleLinear().domain([0, max]).range([chartHeight, 0]) 
 
@@ -175,29 +195,52 @@ const svgchart = d3.select('#svgchart') // select the svg element
   .attr("transform", "translate(" + margins.left + "," + margins.top + ")")
 
 console.log("entrancesByHour.K =",entrancesByHour.K) //test
-console.log("half rect width = ", barWidth/2)
-const bar = svgchart.selectAll("g") // each bar is a g element
-  .data(entrancesByHour.K)
+
+Object.keys(entrancesByHour).forEach(userKey => {
+  console.log("entrancesByHour["+userKey+"] =",entrancesByHour[userKey])
+  addBar(entrancesByHour[userKey], userKey)
+})
+
+function addBar(userEntrances, userKey) {
+  const methodName = "addBar"
+  console.log(methodName, "userEntrances =", userEntrances, "userKey =", userKey)
+  const zeroBarHeight = 3 // height of bar with 0 entrances
+  const bar = svgchart.selectAll(".g"+userKey) // each bar is a g element
+  .data(userEntrances)
   .enter().append("g")
+  .attr("class", "g"+userKey)
   .attr("transform", (d, i) => { 
     // translate the g element horizontally and center it around the tick
-    const xcoord = x(xRange.findIndex((element) => element==d.range)) - barWidth/2
+    let offset = 0
+    switch(userKey){
+      case 'K':
+       offset = barWidth*1.5
+       break;
+      case 'P':
+        offset = barWidth*0.5
+       break;
+      case 'F':
+       offset = -barWidth*0.5
+      break;
+    }
+    const xcoord = x(xRange.findIndex((element) => element==d.range)) - offset
     return "translate(" + xcoord + ", 0)" 
-  }) 
-
-bar.append("rect") // insert a rect in the g element
-  .attr("class", "bar")
-  .attr("y", (d) => y(d.count)) // y coordinate of the rect (ex: if y height is 10px, y must be set to chartHeight-10)
+  })
+  bar.append("rect") // insert a rect in the g element
+  .attr("class", "bar bar"+userKey)
+  .attr("y", (d) => d.count==0 ? y(0)-zeroBarHeight : y(d.count)) // y coordinate of the rect (ex: if y height is 10px, y must be set to chartHeight-10)
   .attr("width", barWidth - 1) // width of the rect, leave 1px for spacing between bars
-  .attr("height", (d) => chartHeight - y(d.count)) // height of the rect
+  .attr("height", (d) => d.count==0 ? zeroBarHeight : chartHeight - y(d.count)) // height of the rect
+}
 
+/*
 const dot = svgchart.selectAll(".dot")
   .data(entrancesByHour.K)
   .enter().append("circle")
   .attr("r", 4) // circle radius
   .attr("cx", (d) => x(xRange.findIndex((element) => element==d.range))) // circle x coord
   .attr("cy", (d) => y(d.count)) // circle y coord
-console.log("dot =",dot)
+*/
 
 //x axis line:
 const xAxis = svgchart.append('g')
@@ -205,9 +248,69 @@ const xAxis = svgchart.append('g')
   .attr("transform", "translate(0," + chartHeight + ")") // put the g on the bottom
   .call(d3.axisBottom(x).tickFormat((i)=>xRange[i])) // call d3.axisBottom(x) on the g, to generate the axis within the g
 
+// x axis label:							    
+xAxis.append("text")
+  .classed("axisLabel", true)
+  .text("Hour Range")
+  .attr("dx", "20em") // x offset
+  .attr("dy", "2.5em") // y offset
+
 //y axis line:
 const yAxis = svgchart.append('g')
   .classed("y-axis", true)
   .call(d3.axisLeft(y).ticks(max)) // show "max" number of y ticks
 
+// y axis label:
+yAxis.append("text")
+.attr("id", "yAxisLabel")
+.classed("axisLabel", true)
+.text("Number of entrances")
+.attr("dx", "-10em") // x offset
+.attr("dy", "-3.25em") // y offset
+.attr("transform", "rotate(-90)") // rotate the label vertically
+
 xAxis.selectAll("text").style("text-anchor", "middle") // center x axis ticks' text
+
+// legend:
+const rectLegendX = "60em"
+const rectLegendY = 1
+const rectLegendW = 10
+const rectLegendH = 10
+const labelLegendDx = "60.8em"
+const rectLegendYOffset = 1 
+d3.select('#svgchart')
+.append("rect")
+  .attr("width", rectLegendW)
+  .attr("height",rectLegendH)
+  .attr("x", rectLegendX)
+  .attr("y", rectLegendY+"em")
+  .classed("barK legend-rect", true)
+d3.select('#svgchart')
+.append('text')
+.text("K")
+.attr("dx", labelLegendDx)
+.attr("dy", "1.48em")
+d3.select('#svgchart')
+.append("rect")
+  .attr("width", rectLegendW)
+  .attr("height",rectLegendH)
+  .attr("x", rectLegendX)
+  .attr("y", rectLegendY+rectLegendYOffset+"em")
+  .classed("barP legend-rect", true)
+d3.select('#svgchart')
+.append('text')
+.text("P")
+.attr("dx", labelLegendDx)
+.attr("dy", "2.55em")
+d3.select('#svgchart')
+.append("rect")
+  .attr("width", rectLegendW)
+  .attr("height",rectLegendH)
+  .attr("x", rectLegendX)
+  .attr("y", rectLegendY+rectLegendYOffset*2+"em")
+  .classed("barF legend-rect", true)
+d3.select('#svgchart')
+.append('text')
+.text("F")
+.attr("dx", labelLegendDx)
+.attr("dy", "3.65em")
