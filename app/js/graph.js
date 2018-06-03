@@ -1,33 +1,82 @@
 'use strict'
 
+
 const data = 
     [
       {
-        "date": "2018-05-01",
+        "date": "2018-05-24",
         "entrances": {
-          "K": ["09:44:10", "10:30:10", "11:21:10"],
-          "P": ["09:00:10", "09:21:10"],
-          "F": ["09:43:10", "10:00:00", "10:00:39"]
+          "K": [],
+          "P": [],
+          "F": ["09:44:11",	"10:38:01",	"10:46:56",	"10:57:51",	"11:05:21",	"11:21:31",	"11:56:16",	"11:59:01",	"12:11:01",	
+          "12:24:51",	"13:03:01",	"13:03:21",	"15:14:14",	"15:28:31",	"15:30:51",	"16:33:16",	"16:53:21",	"16:58:31",	"17:19:41",	
+          "18:03:31",	"18:23:31",	"18:29:31",	"18:37:21"]
         }
       },
       {
-        "date": "2018-05-02",
+        "date": "2018-05-25",
         "entrances": {
-          "K": ["09:10:10", "10:01:20", "10:12:10", "11:55:10"],
-          "P": ["09:27:10", "11:36:10"],
-          "F": ["09:41:10", "10:44:10", "11:44:10"]
+          "K": [],
+          "P": [],
+          "F": ["09:05:11",	"09:22:16",	"09:23:16",	"09:34:16",	"10:01:01",	"10:11:01",	"10:35:51",	"11:06:19",	"12:26:10",	
+          "12:33:29",	"15:03:29	15:33:11",	"18:10:11"]
+        }
+      },
+      {
+        "date": "2018-05-28",
+        "entrances": {
+          "K": [],
+          "P": ["11:08:24"],
+          "F": ["09:12:01","10:08:01","11:03:16","11:09:01","15:48:01","16:01:01","16:11:01","17:56:01","18:03:01"]
+        }
+      },
+      {
+        "date": "2018-05-29",
+        "entrances": {
+          "K": [],
+          "P": ["09:24:03"],
+          "F": ["09:10:56","09:24:01", "09:27:31", "09:51:01", "10:18:01", "10:45:01", "11:32:01", "11:33:01", "12:37:01", 
+          "16:12:01", "16:20:01", "16:26:01", "16:34:01"]
+        }
+      },
+      {
+        "date": "2018-05-30",
+        "entrances": {
+          "K": [],
+          "P": ["09:40:01", "16:34:51", "17:03:37","17:13:42","17:14:06","17:41:18"],
+          "F": ["09:10:01","09:30:01", "10:58:29","11:44:11","12:46:58","16:10:17", "16:45:00","16:50:00", "17:54:30", "18:04:20", "18:09:52"]
+        }
+      },
+      {
+        "date": "2018-05-31",
+        "entrances": {
+          "K": ["10:38:00"],
+          "P": [],
+          "F": ["09:15:01","09:51:01","09:58:02","12:15:27","12:30:01","12:47:17","14:40:33","15:34:17"]
+        }
+      },
+      {
+        "date": "2018-06-01",
+        "entrances": {
+          "K": ["12:20:29", "17:23:43"],
+          "P": ["18:24:20"],
+          "F": ["09:31:05","09:35:10","09:50:07","10:25:16","10:48:01","10:54:00","12:31:47","14:37:26","14:53:31","15:52:24",
+          "15:53:24","17:17:27", "17:46:12","18:00:05"]
         }
       }
     ]
 
 let max = 0
 let entrancesByHour = {}
-entrancesByHour.K = {"values": {"h08_09":0, "h09_10": 0, "h10_11": 0, "h11_12": 0, "h12_13": 0, "h13_14": 0, "h14_15": 0, 
-          "h15_16": 0, "h16_17": 0, "h17_18": 0, "h18_19": 0}}
-entrancesByHour.P = {"values": {"h08_09":0, "h09_10": 0, "h10_11": 0, "h11_12": 0, "h12_13": 0, "h13_14": 0, "h14_15": 0, 
-          "h15_16": 0, "h16_17": 0, "h17_18": 0, "h18_19": 0}}
-entrancesByHour.F = {"values": {"h08_09":0, "h09_10": 0, "h10_11": 0, "h11_12": 0, "h12_13": 0, "h13_14": 0, "h14_15": 0, 
-          "h15_16": 0, "h16_17": 0, "h17_18": 0, "h18_19": 0}}
+entrancesByHour.K = [{"range":"09-10","count": 0}, {"range":"10-11","count": 0}, {"range":"11-12","count": 0}, 
+  {"range":"12-13","count": 0}, {"range":"13-14","count": 0}, {"range":"14-15","count": 0}, {"range":"15-16","count": 0}, 
+  {"range":"16-17","count": 0}, {"range":"17-18","count": 0}, {"range":"18-19","count": 0}]
+entrancesByHour.P = [{"range":"09-10","count": 0}, {"range":"10-11","count": 0}, {"range":"11-12","count": 0}, 
+  {"range":"12-13","count": 0}, {"range":"13-14","count": 0}, {"range":"14-15","count": 0}, {"range":"15-16","count": 0}, 
+  {"range":"16-17","count": 0}, {"range":"17-18","count": 0}, {"range":"18-19","count": 0}]
+entrancesByHour.F = [{"range":"09-10","count": 0}, {"range":"10-11","count": 0}, {"range":"11-12","count": 0}, 
+  {"range":"12-13","count": 0}, {"range":"13-14","count": 0}, {"range":"14-15","count": 0}, {"range":"15-16","count": 0}, 
+  {"range":"16-17","count": 0}, {"range":"17-18","count": 0}, {"range":"18-19","count": 0}]
 
 data.forEach(entranceObj => {
   // date, entrances object of given day
@@ -58,70 +107,41 @@ function checkHour(entranceDate, key, date) {
   const hour17Date = new Date(date + " 17:00:000")
   const hour18Date = new Date(date + " 18:00:000")
   const hour19Date = new Date(date + " 19:00:000")
-  if(entranceDate < hour09Date) {
-    entrancesByHour[key].values.h08_09++
-    if(max < entrancesByHour[key].values.h08_09) max++
-  }else if(entranceDate < hour10Date) {
-    entrancesByHour[key].values.h09_10++
-    if(max < entrancesByHour[key].values.h09_10) max++
+  if(entranceDate < hour10Date) {
+    entrancesByHour[key][0].count++
+    if(max < entrancesByHour[key][0].count) max++
   }else if(entranceDate < hour11Date) {
-    entrancesByHour[key].values.h10_11++
-    if(max < entrancesByHour[key].values.h10_11) max++
+    entrancesByHour[key][1].count++
+    if(max < entrancesByHour[key][1].count) max++
   }else if(entranceDate < hour12Date) {
-    entrancesByHour[key].values.h11_12++
-    if(max < entrancesByHour[key].values.h11_12) max++
+    entrancesByHour[key][2].count++
+    if(max < entrancesByHour[key][2].count) max++
   }else if(entranceDate < hour13Date) {
-    entrancesByHour[key].values.h12_13++
-    if(max < entrancesByHour[key].values.h12_13) max++
+    entrancesByHour[key][3].count++
+    if(max < entrancesByHour[key][3].count) max++
   }else if(entranceDate < hour14Date) {
-    entrancesByHour[key].values.h13_14++
-    if(max < entrancesByHour[key].values.h13_14) max++
+    entrancesByHour[key][4].count++
+    if(max < entrancesByHour[key][4].count) max++
   }else if(entranceDate < hour15Date) {
-    entrancesByHour[key].values.h14_15++
-    if(max < entrancesByHour[key].values.h14_15) max++
+    entrancesByHour[key][5].count++
+    if(max < entrancesByHour[key][5].count) max++
   }else if(entranceDate < hour16Date) {
-    entrancesByHour[key].values.h15_16++
-    if(max < entrancesByHour[key].values.h15_16) max++
+    entrancesByHour[key][6].count++
+    if(max < entrancesByHour[key][6].count) max++
   }else if(entranceDate < hour17Date) {
-    entrancesByHour[key].values.h16_17++
-    if(max < entrancesByHour[key].values.h16_17) max++
+    entrancesByHour[key][7].count++
+    if(max < entrancesByHour[key][7].count) max++
   }else if(entranceDate < hour18Date) {
-    entrancesByHour[key].values.h17_18++
-    if(max < entrancesByHour[key].values.h17_18) max++
+    entrancesByHour[key][8].count++
+    if(max < entrancesByHour[key][8].count) max++
   }else if(entranceDate < hour19Date) {
-    entrancesByHour[key].values.h18_19++
-    if(max < entrancesByHour[key].values.h18_19) max++
+    entrancesByHour[key][9].count++
+    if(max < entrancesByHour[key][9].count) max++
   }
 }
+console.log("entrancesByHour = ",JSON.stringify(entrancesByHour))
 
-/*
-const entrancesByHour =
-  [
-    {
-      "K": {
-        "values": {
-          "9_10": 3,
-          "10_11": 7,
-          "11_12": 5
-        }
-      },
-      "P": {
-        "values": {
-          "9_10": 3,
-          "10_11": 7,
-          "11_12": 5
-        }
-      },
-      "F": {
-        "values": {
-          "9_10": 3,
-          "10_11": 7,
-          "11_12": 5
-        }
-      }
-    }
-  ]*/
-entrancesByHour =  
+/*entrancesByHour =  
     {
       "K": 
         [
@@ -169,6 +189,7 @@ entrancesByHour =
           } 
         ],
     }
+*/
 
 console.log("entrancesByHour = ",JSON.stringify(entrancesByHour))
 console.log("entrancesByHour = ",entrancesByHour)
@@ -251,7 +272,7 @@ const xAxis = svgchart.append('g')
 // x axis label:							    
 xAxis.append("text")
   .classed("axisLabel", true)
-  .text("Hour Range")
+  .text("Time Slot")
   .attr("dx", "20em") // x offset
   .attr("dy", "2.5em") // y offset
 
