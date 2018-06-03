@@ -65,3 +65,7 @@ div.tooltip {
 #footer a{
 	color: blue;
 }
+
+#svgchart circle{
+	fill: green;
+}
