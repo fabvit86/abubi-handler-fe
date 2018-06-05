@@ -1,10 +1,20 @@
 'use strict'
 
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+Date.prototype.getMonthName = function() {
+  return months[this.getMonth()];
+}
+
+function getMonthName(month) {
+  return months[month]
+}
+
 const url = "http://10.186.72.247:9090/abubi/"
-$.getJSON(url, (data, textStatus) => {
+// $.getJSON(url, (data, textStatus) => {
  
 // TEST DATA:
-/*const data = 
+const data = 
     [
       {
         "date": "2018-05-24",
@@ -67,9 +77,37 @@ $.getJSON(url, (data, textStatus) => {
           "15:53:24","17:17:27", "17:46:12","18:00:05"]
         }
       }
-    ]*/
+    ]
 
-  console.log(data)
+  console.log(data) //TEST
+
+  // month select:
+  let monthYearArray = []
+  function getMonths() {
+    data.forEach(dataElement => {
+      const currDate = new Date(dataElement.date)
+      const month = currDate.getMonth()
+      const year = currDate.getFullYear()
+      const toIns = year+"-"+month
+      if(!monthYearArray.includes(toIns)) {
+        monthYearArray.push(toIns)
+      }
+    })
+    console.log("not sorted:",monthYearArray)
+    monthYearArray.sort(function(a,b){
+      return new Date(b) - new Date(a);
+    });
+    console.log("sorted:",monthYearArray)
+  }
+  
+  getMonths()
+  monthYearArray.forEach(monthYear => $("#month-select").append(
+    "<option value='"+monthYear+"'>"+monthYear.substring(0,4)+" - "+getMonthName(monthYear.substring(5))+"</option>"))
+
+  // function filterByMonth(month) {
+  //   return data.filter(dataElement => new Date(dataElement.date).getMonth() == month)
+  // }
+  // console.log(filterByMonth(5))
 
   let max = 0
   let entrancesByHour = {}
@@ -308,4 +346,4 @@ $.getJSON(url, (data, textStatus) => {
   .text("F")
   .attr("dx", labelLegendDx)
   .attr("dy", "3.65em")
-})
+// })
